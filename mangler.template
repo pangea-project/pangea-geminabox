@@ -1,0 +1,13 @@
+require 'date'
+module SpecMangler
+  def initialize(*)
+    super do |spec|
+      yield spec
+      spec.metadata.delete('allowed_push_host')
+      spec.version = spec.version.to_s + "." + DateTime.now.strftime('%Y%m%d.%H%M')
+    end
+  end
+end
+class Gem::Specification
+  prepend SpecMangler
+end

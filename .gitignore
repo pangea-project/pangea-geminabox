@@ -1,0 +1,2 @@
+# When not in deployment mode data is put into pwd
+data/
