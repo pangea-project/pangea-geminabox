@@ -25,13 +25,6 @@ parallel(
       git_clone 'https://github.com/net-ssh/net-ssh', 'net-ssh'
       sh "ruby geminabox/build_gem.rb `pwd`/net-ssh"
     }
-  },
-  "git[ci_reporter_test_unit]": {
-    cleanNode('master') {
-      git_clone 'https://github.com/blue-systems/pangea-geminabox', 'geminabox'
-      git_clone 'https://github.com/apachelogger/ci_reporter_test_unit', 'ci_reporter_test_unit', 'test-unit-3'
-      sh "ruby geminabox/build_gem.rb `pwd`/ci_reporter_test_unit"
-    }
   }
 )
 
