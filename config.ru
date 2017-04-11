@@ -24,6 +24,7 @@ require 'geminabox'
 require_relative 'config'
 
 CREDENTIALS = [Config.user, Config.password].freeze
+API_KEY = Config.api_key.freeze
 
 # WARNING: configuration needs to happen before we call any methods class-level
 #   or object-level, it does not matter.
@@ -33,19 +34,32 @@ Geminabox.rubygems_proxy = true
 
 Geminabox::Server.helpers do
   def guard!
-    return if authorized?
+    request.path.start_with?('/api') ? api_guard! : web_guard!
+  end
+
+  def web_guard!
+    return if web_authorized?
     response['WWW-Authenticate'] = %(Basic realm="Geminabox")
     halt 401, "Need to authenticate to manipulate stuff.\n"
   end
 
-  def authorized?
+  def api_guard!
+    return if api_authorized?
+    halt 401, "API_KEY in HTTP_AUTHORIZATION invalid or missing.\n"
+  end
+
+  def api_authorized?
+    env['HTTP_AUTHORIZATION'] == API_KEY
+  end
+
+  def web_authorized?
     @auth ||= Rack::Auth::Basic::Request.new(request.env)
     @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == CREDENTIALS
   end
 end
 
 Geminabox::Server.before do
-  p request
+  p request.path
   next if request.safe?
   guard!
 end

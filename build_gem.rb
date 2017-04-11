@@ -22,8 +22,6 @@ require 'fileutils'
 require 'tmpdir'
 require 'yaml'
 
-require_relative 'config'
-
 # Mangles a gemspec file so we can build it into something sane.
 class GemSpecMangler
   attr_reader :path
@@ -62,16 +60,15 @@ class GemSpecMangler
   end
 end
 
-dir = ARGV[0]
+dir = File.expand_path(ARGV[0])
 
 FileUtils.rm_rf('pangeapkg')
-Dir.mktmpdir do |tmpdir|
-  Dir.chdir(tmpdir) do
-    spec = GemSpecMangler.new(GemSpecMangler.find_file(dir))
-    spec.mangle!
-    system('gem', 'build', spec.new_path, '-V') || raise
-    system('gem', 'push', Dir.glob('*.gem').fetch(0),
-           '-V',
-           '--host', Config.host)
-  end
-end
+spec = GemSpecMangler.new(GemSpecMangler.find_file(dir))
+spec.mangle!
+# This would be much nicer if we simply called gem build in the pwd where
+# we want the gem to be. BUT, shitty gemspecs that do not resolve paths
+# to their absolute variant will then fail to find assets.
+system('gem', 'build', spec.new_path, '-V', chdir: dir) || raise
+# .gem/credentials controls API_KEY used here.
+system('gem', 'push', Dir.glob("#{dir}/*.gem").fetch(0),
+       '--host', 'https://gem.cache.pangea.pub') || raise
