@@ -12,13 +12,6 @@ parallel(
       sh "ruby geminabox/build_gem.rb `pwd`/releaseme"
     }
   },
-  "git[gitlab]": {
-    cleanNode('master') {
-      git_clone 'https://github.com/blue-systems/pangea-geminabox', 'geminabox'
-      git_clone 'https://github.com/NARKOZ/gitlab', 'gitlab'
-      sh "ruby geminabox/build_gem.rb `pwd`/gitlab"
-    }
-  },
   "git[net-ssh]": {
     cleanNode('master') {
       git_clone 'https://github.com/blue-systems/pangea-geminabox', 'geminabox'
