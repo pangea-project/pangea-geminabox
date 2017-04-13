@@ -79,30 +79,27 @@ gem_files = Dir.glob("#{dir}/*.gem")
 raise "Too many gems! #{gemfiles}" unless gem_files.size == 1
 gem_file = gem_files.fetch(0)
 gem_spec = Gem::Package.new(gem_file).spec
+
+# Validate our spec against the one in the box (if it has one.)
 Dir.mktmpdir do |tmpdir|
   system('gem', 'fetch', '--clear-sources', '--source',
          'https://gem.cache.pangea.pub', gem_spec.name,
          chdir: tmpdir)
   gems = Dir.glob("#{tmpdir}/*.gem")
+  # Should't have more than 1 obviously.
+  raise "Fetched too many gems #{gems}" if gems.size > 1
+
   if !gems.empty? && File.basename(gems[0]) == File.basename(gem_file)
     puts "Gem already exists in the box #{gem_files}"
     exit
+  elsif !gems.empty?
+    # Our _new_ version should be greater than the fetched one.
+    other_spec = Gem::Package.new(gems.fetch(0)).spec
+    if gem_spec.version < other_spec.version
+      raise "Our new version is older than the one in the box!!!\n" \
+            "#{gem_spec} vs. #{other_spec}"
+    end
   end
-  FileUtils.mv(gems, dir, verbose: true) if !gems.empty?
-end
-gem_files = Dir.glob("#{dir}/*.gem")
-
-# If we have multiple gems now, we can do some quality assertations.
-# Should't have more than 2 now.
-raise "Fetched too many gems #{gem_files}" if gem_files.size > 2
-# If we delete our new one we should be left with one.
-gem_files.delete(gem_file)
-raise "Failed to delete new gem #{gem_files}" if gem_files.size > 1
-# Our _new_ version should be greater than the fetched one.
-other_spec = Gem::Package.new(gem_files.fetch(0)).spec
-if gem_spec.version < other_spec.version
-  raise "Our new version is older than the one in the box!!!\n" \
-        "#{gem_spec} vs. #{other_spec}"
 end
 
 # .gem/credentials controls API_KEY used here.
