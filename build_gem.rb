@@ -79,9 +79,17 @@ gem_files = Dir.glob("#{dir}/*.gem")
 raise "Too many gems! #{gemfiles}" unless gem_files.size == 1
 gem_file = gem_files.fetch(0)
 gem_spec = Gem::Package.new(gem_file).spec
-system('gem', 'fetch', '--clear-sources', '--source',
-       'https://gem.cache.pangea.pub', gem_spec.name,
-       chdir: dir)
+Dir.mktmpdir do |tmpdir|
+  system('gem', 'fetch', '--clear-sources', '--source',
+         'https://gem.cache.pangea.pub', gem_spec.name,
+         chdir: tmpdir)
+  gems = Dir.glob("#{tmpdir}/*.gem")
+  if !gems.empty? && File.basename(gems[0]) == File.basename(gem_file)
+    puts "Gem already exists in the box #{gem_files}"
+    exit
+  end
+  FileUtils.mv(gems, dir, verbose: true)
+end
 gem_files = Dir.glob("#{dir}/*.gem")
 if gem_files.size == 1
   puts "Gem already exists in the box #{gem_files}"
