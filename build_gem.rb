@@ -96,7 +96,7 @@ gem_files.delete(gem_file)
 raise "Failed to delete new gem #{gem_files}" if gem_files.size > 1
 # Our _new_ version should be greater than the fetched one.
 other_spec = Gem::Package.new(gem_files.fetch(0)).spec
-if gem_spec.version < other_spec
+if gem_spec.version < other_spec.version
   raise "Our new version is older than the one in the box!!!\n" \
         "#{gem_spec} vs. #{other_spec}"
 end
