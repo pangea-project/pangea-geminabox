@@ -4,7 +4,7 @@ module SpecMangler
     super do |spec|
       yield spec
       spec.metadata.delete('allowed_push_host')
-      commit_time = DateTime.parse(`git log -1 --format=%cd`.strip).utc.strftime('%Y%m%d.%H%M')
+      commit_time = DateTime.parse(`git log -1 --date=iso --format=%cd`.strip).to_time.utc.strftime('%Y%m%d.%H%M')
       raise unless $?.success? && commit_time
       spec.version = spec.version.to_s + "." + commit_time
     end
