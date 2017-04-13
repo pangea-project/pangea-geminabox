@@ -80,7 +80,8 @@ raise "Too many gems! #{gemfiles}" unless gem_files.size == 1
 gem_file = gem_files.fetch(0)
 gem_spec = Gem::Package.new(gem_file).spec
 system('gem', 'fetch', '--clear-sources', '--source',
-       'https://gem.cache.pangea.pub', gem_spec.name)
+       'https://gem.cache.pangea.pub', gem_spec.name,
+       chdir: dir)
 gem_files = Dir.glob("#{dir}/*.gem")
 if gem_files.size == 1
   puts "Gem already exists in the box #{gem_files}"
