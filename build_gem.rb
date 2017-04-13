@@ -88,13 +88,9 @@ Dir.mktmpdir do |tmpdir|
     puts "Gem already exists in the box #{gem_files}"
     exit
   end
-  FileUtils.mv(gems, dir, verbose: true)
+  FileUtils.mv(gems, dir, verbose: true) if !gems.empty?
 end
 gem_files = Dir.glob("#{dir}/*.gem")
-if gem_files.size == 1
-  puts "Gem already exists in the box #{gem_files}"
-  exit
-end
 
 # If we have multiple gems now, we can do some quality assertations.
 # Should't have more than 2 now.
