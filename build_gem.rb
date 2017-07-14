@@ -82,8 +82,11 @@ gem_spec = Gem::Package.new(gem_file).spec
 
 # Validate our spec against the one in the box (if it has one.)
 Dir.mktmpdir do |tmpdir|
-  system('gem', 'fetch', '--clear-sources', '--source',
-         'https://gem.cache.pangea.pub', gem_spec.name,
+  system('gem', 'fetch',
+         '--prerelease',
+         '--clear-sources',
+         '--source', 'https://gem.cache.pangea.pub',
+         gem_spec.name,
          chdir: tmpdir)
   gems = Dir.glob("#{tmpdir}/*.gem")
   # Should't have more than 1 obviously.
