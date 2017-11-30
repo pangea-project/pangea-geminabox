@@ -2,30 +2,32 @@ GEM
   remote: https://rubygems.org/
   specs:
     builder (3.2.3)
-    faraday (0.12.0.1)
+    faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
-    geminabox (0.13.5)
+    geminabox (0.13.11)
       builder
       faraday
       httpclient (>= 2.2.7)
       nesty
+      reentrant_flock
       sinatra (>= 1.2.7)
     httpclient (2.8.3)
     kgio (2.11.0)
     multipart-post (2.0.0)
-    mustermann (1.0.0)
+    mustermann (1.0.1)
     nesty (1.0.2)
-    rack (2.0.1)
-    rack-protection (2.0.0.rc2)
+    rack (2.0.3)
+    rack-protection (2.0.0)
       rack
-    raindrops (0.18.0)
-    sinatra (2.0.0.rc2)
-      mustermann (= 1.0.0)
+    raindrops (0.19.0)
+    reentrant_flock (0.1.1)
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.0.rc2)
+      rack-protection (= 2.0.0)
       tilt (~> 2.0)
-    tilt (2.0.7)
-    unicorn (5.3.0)
+    tilt (2.0.8)
+    unicorn (5.3.1)
       kgio (~> 2.6)
       raindrops (~> 0.7)
 
@@ -38,4 +40,4 @@ DEPENDENCIES
   unicorn
 
 BUNDLED WITH
-   1.14.2
+   1.16.0
