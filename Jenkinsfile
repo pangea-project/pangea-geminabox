@@ -18,6 +18,13 @@ parallel(
       git_clone 'https://github.com/net-ssh/net-ssh', 'net-ssh'
       sh "ruby geminabox/build_gem.rb `pwd`/net-ssh"
     }
+  },
+  "git[bundler]": {
+    cleanNode('master') {
+      git_clone 'https://github.com/blue-systems/pangea-geminabox', 'geminabox'
+      git_clone 'https://github.com/bhush9/bundler', 'bundler', 'bshah-bundler-snafu-fix'
+      sh "ruby geminabox/build_gem.rb `pwd`/bundler"
+    }
   }
 )
 
