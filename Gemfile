@@ -21,5 +21,5 @@
 source 'https://rubygems.org'
 
 gem 'geminabox'
-gem 'sinatra', '>= 2.0.0.rc2' # unicorn wants rack2, only sinatra2 is compatible
+gem 'sinatra', '>= 2.0.2' # unicorn wants rack2, only sinatra2 is compatible
 gem 'unicorn'
