@@ -24,7 +24,7 @@ if [ -d $HOME/.rbenv ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 else
-  export GEM_HOME=$(ruby -rubygems -e 'puts Gem.user_dir')
+  export GEM_HOME=$(ruby -e 'puts Gem.user_dir')
   export GEM_PATH=$GEM_HOME:$HOME/.gems/bundler
   export PATH=$GEM_HOME/bin:$PATH
   if [ ! -f ~/.gemrc ]; then
@@ -32,9 +32,9 @@ else
   fi
 fi
 
-gem update --system
 gem install bundler --conservative
 gem update bundler
+bundle update --bundler
 bundle install
 
 exec unicorn -d
