@@ -4,6 +4,7 @@
 
 require 'rubygems'
 require 'geminabox'
+require 'unicorn/worker_killer'
 
 require_relative 'config'
 
@@ -47,6 +48,11 @@ Geminabox::Server.before do
   next if request.safe?
   guard!
 end
+
+
+
+use Unicorn::WorkerKiller::MaxRequests, 3072, 4096
+use Unicorn::WorkerKiller::Oom, (100*(1024**2)), (128*(1024**2))
 
 # disable legacy index for rubygems<1.2 to speed things up
 Geminabox.build_legacy = false

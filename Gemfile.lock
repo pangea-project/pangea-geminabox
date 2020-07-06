@@ -4,6 +4,7 @@ GEM
     builder (3.2.4)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
+    ffi (1.13.1)
     geminabox (1.2.0)
       builder
       faraday
@@ -11,13 +12,15 @@ GEM
       nesty
       reentrant_flock
       sinatra (>= 1.2.7)
+    get_process_mem (0.2.5)
+      ffi (~> 1.0)
     httpclient (2.8.3)
     kgio (2.11.3)
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nesty (1.0.2)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
     raindrops (0.19.1)
@@ -32,6 +35,9 @@ GEM
     unicorn (5.5.5)
       kgio (~> 2.6)
       raindrops (~> 0.7)
+    unicorn-worker-killer (0.4.4)
+      get_process_mem (~> 0)
+      unicorn (>= 4, < 6)
 
 PLATFORMS
   ruby
@@ -40,6 +46,7 @@ DEPENDENCIES
   geminabox
   sinatra (>= 2.0.2)
   unicorn
+  unicorn-worker-killer
 
 BUNDLED WITH
    1.17.2
