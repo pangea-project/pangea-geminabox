@@ -11,6 +11,15 @@ parallel(
       sh 'ls -lah releaseme'
       sh "ruby geminabox/build_gem.rb `pwd`/releaseme"
     }
+  },
+  "git[jenkins_junit_builder]": {
+    cleanNode('master') {
+      git_clone 'https://github.com/blue-systems/pangea-geminabox', 'geminabox'
+      git_clone 'https://github.com/hsitter/jenkins_junit_builder', 'jenkins_junit_builder'
+      sh 'ls -lah'
+      sh 'ls -lah jenkins_junit_builder'
+      sh "ruby geminabox/build_gem.rb `pwd`/jenkins_junit_builder"
+    }
   }
 )
 
