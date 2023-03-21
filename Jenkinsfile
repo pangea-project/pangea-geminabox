@@ -20,15 +20,6 @@ parallel(
       sh 'ls -lah jenkins_junit_builder'
       sh "ruby geminabox/build_gem.rb `pwd`/jenkins_junit_builder"
     }
-  },
-  "git[jenkins_api_client]": {
-    cleanNode('master') {
-      git_clone 'https://github.com/blue-systems/pangea-geminabox', 'geminabox'
-      git_clone 'https://github.com/bryan-kc/jenkins_api_client.git', 'jenkins_api_client'
-      sh 'ls -lah'
-      sh 'ls -lah jenkins_api_client'
-      sh "ruby geminabox/build_gem.rb `pwd`/jenkins_api_client"
-    }
   }
 )
 
